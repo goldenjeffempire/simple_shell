@@ -89,5 +89,5 @@ Helpful Insights: help [BUILTIN] - Seek enlightenment on built-in commands, illu
 Glimpse into History: history - Delve into the annals of command history, uncovering a tapestry of past interactions.
 
 ## Authors
-Jeffery Emuodafevware 
-Ola Olajide
+[Jeffery Emuodafevware] 
+[Ola Olajide]

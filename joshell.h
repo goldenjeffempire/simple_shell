@@ -27,7 +27,7 @@
 #define JOCONV_LOW	1
 #define JOCONV_UNS	2
 
-/* 1 for default system getline() else use the custom _fgetline */
+/* 1 for default system getline() else use the custom _juseline */
 #define JOUSE_GET 0
 
 #define JOHIST_FILE	".simple_shell_johistory"
@@ -39,13 +39,13 @@ extern char **environ;
 /**
  * struct liststr - singly linked list
  * @num: the number field
- * @fstr: a string
+ * @jstr: a string
  * @next: points to the next node
  */
 typedef struct liststr
 {
 	int num;
-	char *fstr;
+	char *jstr;
 	struct liststr *next;
 } list_t;
 
@@ -68,7 +68,7 @@ typedef struct liststr
  *@status: the return status of the last exec'd command
  *@cmd_buf: address of pointer to cmd_buf, on if chaining
  *@cmd_buf_type: CMD_type ||, &&, ;
- *@readfd: the fd from which to read line input
+ *@readjo: the jo from which to read line input
  *@histcount: the history line number count
  */
 typedef struct passinfo
@@ -76,23 +76,23 @@ typedef struct passinfo
 	char *arg;
 	char **argv;
 	char *path;
+	char **environ;
 	int argc;
 	unsigned int line_count;
 	int err_num;
 	int linecount_flag;
 	char *fname;
 	list_t *env;
+	int status;
 	list_t *history;
 	list_t *falias;
-	char **environ;
 	int env_changed;
-	int status;
 
 	char **cmd_buf; /* pointer to cmd ; chain buffer, for memory mangement */
 	int cmd_buf_type; /* CMD_type ||, &&, ; */
-	int readfd;
+	int readjo;
 	int histcount;
-} finfo_a;
+} jinfo_a;
 
 #define INFO_INIT \
 {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
@@ -106,120 +106,120 @@ typedef struct passinfo
 typedef struct builtin
 {
 	char *type;
-	int (*func)(finfo_a *);
+	int (*func)(jinfo_a *);
 } builtin_table;
 
 
-/* fshell_start.c */
-int hsh(finfo_a *, char **);
-int find_builtin(finfo_a *);
-void find_cmd(finfo_a *);
-void fork_cmd(finfo_a *);
+/* jshell_start.c */
+int hsh(jinfo_a *, char **);
+int find_builtin(jinfo_a *);
+void find_cmd(jinfo_a *);
+void fork_cmd(jinfo_a *);
 
-/* fmem-parse.c */
-int fcmd(finfo_a *, char *);
-char *fdup_chars(char *, int, int);
-char *find_fpath(finfo_a *, char *, char *);
-int bfree(void **);
-
-/* ferr.c */
-void _fputs(char *);
-int _fputchar(char);
-int _fputfd(char c, int fd);
-int _fputsfd(char *fstr, int fd);
-int _ferratoi(char *);
-
-/* fstr.c */
+/* jstr.c */
 int _strlen(char *);
 int _strcmp(char *, char *);
-char *fstarts_with(const char *, const char *);
 char *_strcat(char *, char *);
+char *jstarts_with(const char *, const char *);
+int _strcmp(char *, char *);
 
-/* fstr2.c */
+/* jmem-parse.c */
+int jcmd(jinfo_a *, char *);
+char *jdup_chars(char *, int, int);
+char *find_jpath(jinfo_a *, char *, char *);
+int bfree(void **);
+
+/* jerr.c */
+void _jputs(char *);
+int _jputchar(char);
+int _jputjo(char c, int jo);
+int _jerratoi(char *);
+int _jputsjo(char *jstr, int jo);
+
+/* jerr2.c */
+void print_error(jinfo_a *, char *);
+int print_d(int, int);
+void remove_comments(char *);
+char *convert_number(long int, int, int);
+
+/* jstr2.c */
 char *_strcpy(char *, char *);
 char *_strdup(const char *);
 void _puts(char *);
 int _putchar(char);
 char **strtow(char *, char *);
 
-/* fexit.c */
+/* jfree.c */
+char *_memset(char *, char, unsigned int);
+void jfree(char **);
+void *_realloc(void *, unsigned int, unsigned int);
+int interact(jinfo_a *);
+int joelim(char, char *);
+
+/* joinfo.c */
+void free_jinfo(jinfo_a *, int);
+void sigintHandler(int);
+void set_jinfo(jinfo_a *, char **);
+void clear_jinfo(jinfo_a *);
+
+/* jcusbuilt.c */
+int _jexit(jinfo_a *);
+int _jcd(jinfo_a *);
+int _jhelp(jinfo_a *);
+int _myfalias(jinfo_a *);
+
+/* jbuilt.c */
+int _jhistory(jinfo_a *);
+int print_falias(list_t *node);
+int set_falias(jinfo_a *jinfo, char *jstr);
+
+/* juseline.c */
+ssize_t use_input(jinfo_a *);
+int _juseline(jinfo_a *, char **, size_t *);
+
+/* jenv.c */
+char *_juseenv(jinfo_a *, const char *);
+int _jenv(jinfo_a *);
+int _jmsetenv(jinfo_a *);
+int _junsetenv(jinfo_a *);
+int jpop_env_list(jinfo_a *);
+
+/* juseenv.c */
+char **juse_env(jinfo_a *);
+int j_unsetenv(jinfo_a *, char *);
+int _jsetenv(jinfo_a *, char *, char *);
+
+/* jhistory.c */
+char *use_jhistory_file(jinfo_a *jinfo);
+int write_jhistory(jinfo_a *jinfo);
+int read_jhistory(jinfo_a *jinfo);
+int build_jhistory_list(jinfo_a *jinfo, char *buf, int linecount);
+int renumber_history(jinfo_a *jinfo);
+
+/* jlists.c */
+list_t *jadd_node(list_t **, const char *, int);
+list_t *jadd_node_end(list_t **, const char *, int);
+size_t jprint_list_str(const list_t *);
+int jdelete_node_at_ind(list_t **, unsigned int);
+void jree_jlist(list_t **);
+
+/* jlists2.c */
+size_t jlist_len(const list_t *);
+char **jlist_to_strings(list_t *);
+size_t _jprintlist(const list_t *);
+list_t *jnode_starts_with(list_t *, char *, char);
+ssize_t use_node_ind(list_t *, list_t *);
+
+/* jchain.c */
+int jchain(jinfo_a *, char *, size_t *);
+void check_jchain(jinfo_a *, char *, size_t *, size_t, size_t);
+int replace_falias(jinfo_a *);
+int replace_jvars(jinfo_a *);
+int replace_jstring(char **, char *);
+
+/* jexit.c */
 char *_strncpy(char *, char *, int);
 char *_strncat(char *, char *, int);
 char *_strchr(char *, char);
 
-/* ffree.c */
-char *_memset(char *, char, unsigned int);
-void ffree(char **);
-void *_realloc(void *, unsigned int, unsigned int);
-int interact(finfo_a *);
-int fdelim(char, char *);
-
-/* ferr2.c */
-void print_error(finfo_a *, char *);
-int print_d(int, int);
-char *convert_number(long int, int, int);
-void remove_comments(char *);
-
-/* fcusbuilt.c */
-int _fexit(finfo_a *);
-int _fcd(finfo_a *);
-int _fhelp(finfo_a *);
-int _myfalias(finfo_a *);
-
-/* fbuilt.c */
-int _fhistory(finfo_a *);
-int print_falias(list_t *node);
-int set_falias(finfo_a *finfo, char *fstr);
-
-/* fgetline.c */
-ssize_t get_input(finfo_a *);
-int _fgetline(finfo_a *, char **, size_t *);
-
-
-/* fainfo.c */
-void sigintHandler(int);
-void clear_finfo(finfo_a *);
-void set_finfo(finfo_a *, char **);
-void free_finfo(finfo_a *, int);
-
-/* fenv.c */
-char *_fgetenv(finfo_a *, const char *);
-int _fenv(finfo_a *);
-int _fmsetenv(finfo_a *);
-int _funsetenv(finfo_a *);
-int fpop_env_list(finfo_a *);
-
-/* fgetenv.c */
-char **fget_env(finfo_a *);
-int f_unsetenv(finfo_a *, char *);
-int _fsetenv(finfo_a *, char *, char *);
-
-/* fhist.c */
-char *get_fhistory_file(finfo_a *finfo);
-int write_fhistory(finfo_a *finfo);
-int read_fhistory(finfo_a *finfo);
-int build_fhistory_list(finfo_a *finfo, char *buf, int linecount);
-int renumber_history(finfo_a *finfo);
-
-/* flist.c */
-list_t *fadd_node(list_t **, const char *, int);
-list_t *fadd_node_end(list_t **, const char *, int);
-size_t fprint_list_str(const list_t *);
-int fdelete_node_at_ind(list_t **, unsigned int);
-void free_flist(list_t **);
-
-/* flists2.c */
-size_t flist_len(const list_t *);
-char **flist_to_strings(list_t *);
-size_t _fprintlist(const list_t *);
-list_t *fnode_starts_with(list_t *, char *, char);
-ssize_t get_node_ind(list_t *, list_t *);
-
-/* fchain.c */
-int fchain(finfo_a *, char *, size_t *);
-void check_fchain(finfo_a *, char *, size_t *, size_t, size_t);
-int replace_falias(finfo_a *);
-int replace_fvars(finfo_a *);
-int replace_fstring(char **, char *);
-
-#endif /* FASHELL_H */
+#endif /* JOSHELL_H */

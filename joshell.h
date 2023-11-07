@@ -63,7 +63,7 @@ typedef struct liststr
  *@env: linked list local copy of environ
  *@environ: custom modified copy of environ from LL env
  *@history: the history node
- *@falias: the falias node
+ *@alias: the alias node
  *@env_changed: on if environ was changed
  *@status: the return status of the last exec'd command
  *@cmd_buf: address of pointer to cmd_buf, on if chaining
@@ -85,7 +85,7 @@ typedef struct passinfo
 	list_t *env;
 	int status;
 	list_t *history;
-	list_t *falias;
+	list_t *alias;
 	int env_changed;
 
 	char **cmd_buf; /* pointer to cmd ; chain buffer, for memory mangement */
@@ -151,7 +151,7 @@ char **strtow(char *, char *);
 
 /* jfree.c */
 char *_memset(char *, char, unsigned int);
-void jfree(char **);
+void jfree(char *);
 void *_realloc(void *, unsigned int, unsigned int);
 int interact(jinfo_a *);
 int joelim(char, char *);
@@ -166,12 +166,12 @@ void clear_jinfo(jinfo_a *);
 int _jexit(jinfo_a *);
 int _jcd(jinfo_a *);
 int _jhelp(jinfo_a *);
-int _myfalias(jinfo_a *);
+int _myalias(jinfo_a *);
 
 /* jbuilt.c */
 int _jhistory(jinfo_a *);
-int print_falias(list_t *node);
-int set_falias(jinfo_a *jinfo, char *jstr);
+int print_alias(list_t *node);
+int set_alias(jinfo_a *jinfo, char *jstr);
 
 /* juseline.c */
 ssize_t use_input(jinfo_a *);
@@ -212,10 +212,10 @@ ssize_t use_node_ind(list_t *, list_t *);
 
 /* jchain.c */
 int jchain(jinfo_a *, char *, size_t *);
-void check_jchain(jinfo_a *, char *, size_t *, size_t, size_t);
-int replace_falias(jinfo_a *);
-int replace_jvars(jinfo_a *);
-int replace_jstring(char **, char *);
+void check_chain(jinfo_a *, char *, size_t *, size_t, size_t);
+int replace_alias(jinfo_a *);
+int replace_vars(jinfo_a *);
+int replace_string(char **, char *);
 
 /* jexit.c */
 char *_strncpy(char *, char *, int);

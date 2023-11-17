@@ -7,7 +7,7 @@
  *
  * Return: 0 on success, 1 on error
  */
-void main(int ac, char **av)
+int main(int ac, char **av)
 {
 	jinfo_a jinfo[] = { INFO_INIT };
 	int jo = 2;
@@ -35,7 +35,7 @@ void main(int ac, char **av)
 			}
 			return (EXIT_FAILURE);
 		}
-		(*jinfo).readjo = jo;
+		jinfo->readjo = jo;
 	}
 	jpop_env_list(jinfo);
 	read_jhistory(jinfo);

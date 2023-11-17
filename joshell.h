@@ -108,6 +108,7 @@ typedef struct builtin
         int (*func)(jinfo_a *);
 } builtin_table;
 
+void shell(jinfo_a jinfo[], char* av[]);
 
 /* jshell_start.c */
 int hsh(jinfo_a *, char **);
@@ -191,7 +192,7 @@ int _jsetenv(jinfo_a *jinfo, char *jvar, char *jvalue);
 /* jhistory.c */
 char *use_jhistory_file(jinfo_a *jinfo);
 int write_jhistory(jinfo_a *jinfo);
-ssize_t read_buf(jinfo_a *jinfo, char **buf, size_t *j);
+ssize_t read_buf(jinfo_a *jinfo, char *buf, size_t *j);
 int read_jhistory(jinfo_a *jinfo);
 int build_jhistory_list(jinfo_a *jinfo, char *buf, int linecount);
 int renumber_history(jinfo_a *jinfo);
@@ -200,7 +201,6 @@ int renumber_history(jinfo_a *jinfo);
 list_t *jadd_node(list_t **, const char *jstr, int numb);
 list_t *jadd_node_end(list_t **, const char *jstr, int numb);
 size_t jprint_list_str(const list_t *j);
-ssize_t use_node_ind(list_t *hd, list_t *node)
 int jdelete_node_at_ind(list_t **hd, unsigned int ind);
 void jree_jlist(list_t **hd_jptr);
 

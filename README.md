@@ -2,9 +2,9 @@
 
 # THE GATES OF SHELL - ALX PROJECT
 
-The Gates of Shell is an ALX project that explores advanced concepts in shell programming. It covers processes, system calls, file management, and error handling.
+The Gates of Shell is an ALX project that explores advanced concepts in shell programming. It covers processes, system calls, file management, and error handling.
 
-# Unix Shell
+## Unix Shell
 
 A Unix shell is a command-line interpreter or shell that provides a command line user interface for Unix-like operating systems. The shell is both an interactive command language and a scripting language, and is used by the operating system to control the execution of the system using shell scripts.[2]
 
@@ -31,10 +31,7 @@ Process Creation Mastery: Processes can be forged using system calls like fork i
 
 The Trio of Main Prototypes: main can manifest in three distinct prototypes, each serving unique purposes:
 
-int main(void)
-int main(int argc, char *argv[])
-int main(int argc, char *argv[], char *envp[])
-The PATH's Role: The shell leverages the PATH environment variable to seek out executable programs, scouring directories in the order they're listed.
+int main(void) int main(int argc, char *argv[]) int main(int argc, char *argv[], char *envp[]) The PATH's Role: The shell leverages the PATH environment variable to seek out executable programs, scouring directories in the order they're listed.
 
 Executing Programs via execve: The execve system call orchestrates the execution of another program, seamlessly supplanting the current process.
 
@@ -63,7 +60,8 @@ Command Separator Sensibility: The semicolon serves as a poised conductor, orche
 
 Logical Operator Expertise: The shell deftly juggles the logical operators && and ||, facilitating conditional execution of commands.
 
-Variable Replacement Mastery: Special variables $? and $$ undergo seamless replacement, yielding their respective values.
+Variable Replacement Mastery: Special variables
+$ undergo seamless replacement, yielding their respective values.
 
 Commentary Brilliance: The shell lends an attentive ear to comments prefaced by the venerable #, filtering them out with finesse.
 
@@ -89,5 +87,4 @@ Helpful Insights: help [BUILTIN] - Seek enlightenment on built-in commands, illu
 Glimpse into History: history - Delve into the annals of command history, uncovering a tapestry of past interactions.
 
 ## Authors
-[Jeffery Emuodafevware] 
-[Ola Olajide]
+[Jeffery Emuodafevware] [Ola Olajide]

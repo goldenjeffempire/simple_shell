@@ -1,11 +1,11 @@
 #include "joshell.h"
 /**
- * pop_env_list - funtion that populates env linked-list
+ * jpop_env_list - funtion that populates env linked-list
  * @jinfo: this is pointing to structure containing potential arguments
  *  and used to maintain constant function prototype.
  * Return: Always 0
  */
-int pop_env_list(jinfo_a *jinfo)
+int jpop_env_list(jinfo_a *jinfo)
 {
         list_t *node = NULL;
         size_t j;

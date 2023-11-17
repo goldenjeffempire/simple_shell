@@ -1,11 +1,11 @@
 #include "joshell.h"
 
 /**
- * list_ten - function determines length of linked list
+ * list_len - function determines length of linked list
  * @hd: pointer to first node
  * Return: j
  */
-size_t list_ten(const list_t *hd)
+size_t list_len(const list_t *hd)
 {
         size_t j = 0;
 
@@ -18,11 +18,11 @@ size_t list_ten(const list_t *hd)
 }
 
 /**
- * list_to_strings - function returns an array of strings of the list jstr
+ * jlist_to_strings - function returns an array of strings of the list jstr
  * @hd: pointer to first node
  * Return: array of strings
  */
-char **list_to_strings(list_t *hd)
+char **jlist_to_strings(list_t *hd)
 {
         list_t *node = hd;
         size_t h = jlist_len(hd), j;

@@ -6,7 +6,7 @@
  * Return: allocated string
  */
 
-char *use_history_file(jinfo_a *jinfo)
+char *use_jhistory_file(jinfo_a *jinfo)
 {
         char *buf, *jodir;
 

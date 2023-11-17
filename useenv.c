@@ -5,7 +5,7 @@
  * @name: env var name
  * Return: NULL
  */
-char *_useenv(jinfo_a *jinfo, const char *name)
+char *_juseenv(jinfo_a *jinfo, const char *name)
 {
         list_t *node = (*jinfo).env;
         char *j;

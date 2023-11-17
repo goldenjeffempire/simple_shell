@@ -87,7 +87,6 @@ typedef struct passinfo
         list_t *history;
         list_t *alias;
         int env_changed;
-
         char **cmd_buf; /* pointer to cmd ; chain buffer, for memory mangement */
         int cmd_buf_type; /* CMD_type ||, &&, ; */
         int readjo;
@@ -113,54 +112,54 @@ typedef struct builtin
 /* jshell_start.c */
 int hsh(jinfo_a *, char **);
 int find_builtin(jinfo_a *);
-void find_cmd(jinfo_a *);
-void fork_cmd(jinfo_a *);
+void find_cmd(jinfo_a *jinfo);
+void fork_cmd(jinfo_a *jinfo);
 
 /* jstr.c */
-int _strlen(char *);
-int _strcmp(char *, char *);
-char *_strcat(char *, char *);
+int _strlen(char *j);
+int _strcmp(char *j1, char *j2);
+char *_strcat(char *dest, char *src);
 char *jstarts_with(const char *, const char *);
 int _strcmp(char *, char *);
 
 /* jmem-parse.c */
-int jcmd(jinfo_a *, char *);
-char *jdup_chars(char *, int, int);
+int jcmd(jinfo_a *jinfo, char *path);
+char *joup_chars(char *pathjstr, int jstart, int jstop);
 char *find_jpath(jinfo_a *, char *, char *);
 int bfree(void **);
 
 /* jerr.c */
-void _jputs(char *);
-int _jputchar(char);
+void _jputs(char *jstr);
+int _jputchar(char c);
 int _jputjo(char c, int jo);
-int _jerratoi(char *);
+int _jerratoi(char *s);
 int _jputsjo(char *str, int jo);
 
 /* jerr2.c */
-void print_error(jinfo_a *, char *);
-int print_d(int, int);
-void remove_comments(char *);
-char *convert_number(long int, int, int);
+void print_error(jinfo_a *jinfo, char *jstr);
+int print_d(int input, int jo);
+void remove_comments(char *buf);
+char *convert_number(long int num, int base, int jlags);
 
 /* jstr2.c */
-char *_strcpy(char *, char *);
+char *_strcpy(char *dest, char *src);
 char *_strdup(const char *);
 void _puts(char *);
 int _putchar(char);
 char **strtow(char *, char *);
 
 /* jfree.c */
-char *_memset(char *, char, unsigned int);
-void jfree(char *);
-void *_realloc(void *, unsigned int, unsigned int);
-int interact(jinfo_a *);
-int joelim(char, char *);
+char *_memset(char *t, char c, unsigned int o);
+void jfree(char *p);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+int interact(jinfo_a *jinfo);
+int joelim(char d, char *josdelim);
 
 /* joinfo.c */
-void free_jinfo(jinfo_a *, int);
-void sigintHandler(int);
-void set_jinfo(jinfo_a *, char **);
-void clear_jinfo(jinfo_a *);
+void free_jinfo(jinfo_a *jinfo, int all);
+void sigintHandler(__attribute__((unused))int sig_num);
+void set_jinfo(jinfo_a *jinfo, char **av);
+void clear_jinfo(jinfo_a *jinfo);
 
 /* jcusbuilt.c */
 int _jexit(jinfo_a *);
@@ -169,57 +168,60 @@ int _jhelp(jinfo_a *);
 int _myalias(jinfo_a *);
 
 /* jbuilt.c */
-int _jhistory(jinfo_a *);
+int _history(jinfo_a *);
 int print_alias(list_t *node);
 int set_alias(jinfo_a *jinfo, char *jstr);
 
 /* juseline.c */
-ssize_t use_input(jinfo_a *);
+ssize_t input_buf(jinfo_a *jinfo, char **buf, size_t *ten);
 int _juseline(jinfo_a *, char **, size_t *);
 
 /* jenv.c */
-char *_juseenv(jinfo_a *, const char *);
-int _jenv(jinfo_a *);
+char *_juseenv(jinfo_a *jinfo, const char *name);
+int _jenv(jinfo_a *jinfo);
 int _jmsetenv(jinfo_a *);
-int _junsetenv(jinfo_a *);
-int jpop_env_list(jinfo_a *);
+int _junsetenv(jinfo_a *jinfo);
+int jpop_env_list(jinfo_a *jinfo);
 
 /* juseenv.c */
-char **juse_env(jinfo_a *);
-int j_unsetenv(jinfo_a *, char *);
-int _jsetenv(jinfo_a *, char *, char *);
+char **juse_env(jinfo_a *jinfo);
+int j_unsetenv(jinfo_a *jinfo, char *jvar);
+int _jsetenv(jinfo_a *jinfo, char *jvar, char *jvalue);
 
 /* jhistory.c */
 char *use_jhistory_file(jinfo_a *jinfo);
 int write_jhistory(jinfo_a *jinfo);
+ssize_t read_buf(jinfo_a *jinfo, char **buf, size_t *j);
 int read_jhistory(jinfo_a *jinfo);
 int build_jhistory_list(jinfo_a *jinfo, char *buf, int linecount);
 int renumber_history(jinfo_a *jinfo);
 
 /* jlists.c */
-list_t *jadd_node(list_t **, const char *, int);
-list_t *jadd_node_end(list_t **, const char *, int);
-size_t jprint_list_str(const list_t *);
-int jdelete_node_at_ind(list_t **, unsigned int);
-void jree_jlist(list_t **);
+list_t *jadd_node(list_t **, const char *jstr, int numb);
+list_t *jadd_node_end(list_t **, const char *jstr, int numb);
+size_t jprint_list_str(const list_t *j);
+ssize_t use_node_ind(list_t *hd, list_t *node)
+int jdelete_node_at_ind(list_t **hd, unsigned int ind);
+void jree_jlist(list_t **hd_jptr);
 
 /* jlists2.c */
-size_t jlist_len(const list_t *);
-char **jlist_to_strings(list_t *);
-size_t _jprintlist(const list_t *);
-list_t *jnode_starts_with(list_t *, char *, char);
+size_t jlist_len(const list_t *hd);
+char **jlist_to_strings(list_t *hd);
+size_t _jprintlist(const list_t *hd);
+list_t *jnode_starts_with(list_t *node, char *prefix, char cd);
 ssize_t use_node_ind(list_t *, list_t *);
 
 /* jchain.c */
-int jchain(jinfo_a *, char *, size_t *);
-void check_chain(jinfo_a *, char *, size_t *, size_t, size_t);
+int jchain(jinfo_a *jinfo, char *buf, size_t *f);
+void check_chain(jinfo_a *jinfo, char *buf, size_t *f, size_t i, size_t len);
 int replace_alias(jinfo_a *);
-int replace_vars(jinfo_a *);
-int replace_string(char **, char *);
+int replace_vars(jinfo_a *jinfo);
+int replace_string(char **old, char *new);
 
 /* jexit.c */
-char *_strncpy(char *, char *, int);
-char *_strncat(char *, char *, int);
-char *_strchr(char *, char);
+char *_strncpy(char *dest, char *src, int o);
+char *_strncat(char *dest, char *src, int o);
+char *_strchr(char *s, char e);
+int _strncmp(const char *j1, const char *j2, size_t o);
 
 #endif /* JOSHELL_H */

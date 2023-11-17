@@ -5,7 +5,7 @@
  * @hd_ptr: address of double pointer to hd node
  * Return: void
  */
-void free_list(list_t **hd_jptr)
+void jree_jlist(list_t **hd_jptr)
 {
         list_t *node, *next_node, *hd;
 

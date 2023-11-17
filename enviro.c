@@ -6,7 +6,7 @@
  *that is used to maintain constant function prototype.
  * Return: Always 0
  */
-int _env(jinfo_a *jinfo)
+int _jenv(jinfo_a *jinfo)
 {
         jprint_list_str((*jinfo).env);
         return (0);

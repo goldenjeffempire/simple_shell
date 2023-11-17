@@ -3,13 +3,13 @@
 /**
  * joelim -this function checks if character is a delimeter
  * @d: parameter to check
- * @josdelim: the delimeter string
+ * @joselim: the delimeter string
  * Return: 1 if true, and else 0
  */
-int jodelim(char d, char *josdelim)
+int joelim(char d, char *joselim)
 {
-        while (*josdelim)
-                if (*josdelim++ == d)
+        while (*joselim)
+                if (*joselim++ == d)
                         return (1);
         return (0);
 }
